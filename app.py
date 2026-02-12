@@ -15,243 +15,273 @@ import hashlib
 #  PAGE CONFIG
 # ══════════════════════════════════════════════════════════════
 st.set_page_config(
-    page_title="Image Caption AI",
-    page_icon="◻",
+    page_title="Neural Storyteller",
+    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 # ══════════════════════════════════════════════════════════════
-#  MINIMAL BLACK & WHITE CSS
+#  STYLED DARK UI — CSS
 # ══════════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ── No scroll, full viewport ── */
+/* ── No-scroll viewport ── */
 html, body, .stApp, [data-testid="stAppViewContainer"] {
     overflow: hidden !important;
     height: 100vh !important;
     max-height: 100vh !important;
 }
 
-/* ── Pure black base ── */
+/* ── Dark background with subtle warmth ── */
 .stApp {
-    background: #000000 !important;
+    background: #09090b !important;
 }
 
-/* ── White text everywhere ── */
+/* ── Typography ── */
 html, body, [class*="css"], p, span, label, li,
-.stMarkdown, .stMarkdown p, h1, h2, h3, h4 {
+.stMarkdown, .stMarkdown p {
     font-family: 'Inter', sans-serif !important;
-    color: #ffffff !important;
+    color: #a1a1aa !important;
+}
+h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    color: #fafafa !important;
 }
 
 /* ── Hide Streamlit chrome ── */
 #MainMenu, footer, header { visibility: hidden; }
 .block-container {
-    padding: 2rem 3rem 1rem !important;
+    padding: 1.8rem 3rem 1rem !important;
     max-width: 100% !important;
 }
 
-/* ── Title ── */
-.ns-title {
+/* ── Header ── */
+.ns-header {
     text-align: center;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #ffffff !important;
+    padding: 0 0 1rem;
+}
+.ns-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #8b5cf6 !important;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    padding: 4px 14px;
+    border-radius: 100px;
+    margin-bottom: 0.6rem;
+}
+.ns-title {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #fafafa !important;
     margin: 0;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
+}
+.ns-title span {
+    color: #8b5cf6 !important;
 }
 .ns-subtitle {
-    text-align: center;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    color: #52525b !important;
+    margin: 0.3rem 0 0;
     font-weight: 400;
-    color: #666666 !important;
-    margin: 0.3rem 0 1.5rem;
 }
 
-/* ── Panel (both columns) ── */
-.ns-panel {
-    padding: 0.5rem 0;
-    display: flex;
-    flex-direction: column;
+/* ── Divider ── */
+.ns-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #27272a, transparent);
+    margin: 0.2rem 0 1.2rem;
+    border: none;
 }
 
-/* ── Panel label ── */
+/* ── Section labels ── */
 .ns-label {
-    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.62rem;
     font-weight: 600;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    color: #555555 !important;
-    margin: 0 0 1rem;
-    font-family: 'Inter', sans-serif !important;
-}
-
-/* ── Upload placeholder (+ sign box) ── */
-.ns-upload-placeholder {
-    border: 1px dashed #333333;
-    border-radius: 16px;
+    color: #3f3f46 !important;
+    margin: 0 0 0.8rem;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
+}
+.ns-label::after {
+    content: '';
     flex: 1;
-    min-height: 320px;
-    cursor: pointer;
-    transition: border-color 0.2s ease;
-}
-.ns-upload-placeholder:hover {
-    border-color: #555555;
-}
-.ns-plus {
-    font-size: 3rem;
-    font-weight: 300;
-    color: #333333 !important;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-}
-.ns-upload-hint {
-    font-size: 0.8rem;
-    color: #444444 !important;
-    font-weight: 400;
+    height: 1px;
+    background: #1c1c1e;
 }
 
-/* ── Hide default file uploader styling ── */
+/* ── File uploader ── */
 [data-testid="stFileUploader"] {
     background: transparent !important;
     border: none !important;
 }
-[data-testid="stFileUploader"] > div {
-    padding: 0 !important;
-}
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] {
-    background: transparent !important;
-    border: 1px dashed #333333 !important;
-    border-radius: 16px !important;
-    padding: 3rem 1rem !important;
+    background: rgba(24, 24, 27, 0.5) !important;
+    border: 1.5px dashed #27272a !important;
+    border-radius: 14px !important;
+    padding: 2.5rem 1rem !important;
+    transition: all 0.3s ease !important;
 }
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #555555 !important;
+    border-color: #8b5cf6 !important;
+    background: rgba(139, 92, 246, 0.03) !important;
 }
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] span,
-[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] small,
-[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] button {
-    color: #444444 !important;
+[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] small {
+    color: #3f3f46 !important;
 }
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] button {
     background: transparent !important;
-    border: 1px solid #333333 !important;
-    color: #888888 !important;
+    border: 1px solid #27272a !important;
+    color: #71717a !important;
     border-radius: 8px !important;
+    transition: all 0.2s ease !important;
 }
-
-/* Hide dropzone after file selected */
+[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] button:hover {
+    border-color: #8b5cf6 !important;
+    color: #a78bfa !important;
+}
+/* Hide dropzone once file selected */
 [data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"] {
     display: none !important;
 }
-/* Hide file name chip */
 [data-testid="stFileUploaderFile"] {
     display: none !important;
 }
 
 /* ── Image preview ── */
 .stImage {
-    border-radius: 12px !important;
+    border-radius: 14px !important;
     overflow: hidden !important;
+    border: 1px solid #1c1c1e !important;
 }
-.stImage img {
-    border-radius: 12px !important;
+.stImage img { border-radius: 14px !important; }
+
+/* ── Caption card ── */
+.ns-caption-card {
+    background: rgba(24, 24, 27, 0.4);
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    overflow: hidden;
+    animation: ns-fade 0.6s ease-out;
+}
+@keyframes ns-fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.ns-cap-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #1c1c1e;
+}
+.ns-cap-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #8b5cf6;
+}
+.ns-cap-badge {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.55rem;
+    font-weight: 500;
+    color: #52525b !important;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+.ns-cap-body {
+    padding: 20px 22px;
+}
+.ns-cap-text {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #e4e4e7 !important;
+    line-height: 1.8;
+    margin: 0;
+}
+.ns-cap-text::before {
+    content: '"';
+    color: #8b5cf6 !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-right: 2px;
+}
+.ns-cap-text::after {
+    content: '"';
+    color: #8b5cf6 !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-left: 2px;
 }
 
-/* ── Caption output ── */
-.ns-caption-area {
+/* ── Empty state ── */
+.ns-empty {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    min-height: 320px;
+    min-height: 300px;
 }
-.ns-caption-placeholder {
-    font-size: 0.95rem;
-    color: #333333 !important;
-    font-weight: 400;
-    font-style: italic;
+.ns-empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+    opacity: 0.3;
 }
-.ns-caption-result {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: #ffffff !important;
-    line-height: 1.8;
-    text-align: center;
-    max-width: 90%;
-    animation: ns-fade-in 0.8s ease-out;
+.ns-empty-title {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3f3f46 !important;
+    margin: 0 0 0.2rem;
 }
-@keyframes ns-fade-in {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+.ns-empty-sub {
+    color: #27272a !important;
+    font-size: 0.8rem;
+    margin: 0;
 }
 
-/* ── Generating indicator ── */
-.ns-generating {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #555555 !important;
-    font-size: 0.85rem;
-}
-.ns-dot-loader {
-    display: inline-flex; gap: 4px;
-}
-.ns-dot-loader span {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #555555;
-    animation: ns-dot-bounce 1.2s ease-in-out infinite;
-}
-.ns-dot-loader span:nth-child(2) { animation-delay: 0.15s; }
-.ns-dot-loader span:nth-child(3) { animation-delay: 0.3s; }
-@keyframes ns-dot-bounce {
-    0%, 80%, 100% { opacity: 0.3; }
-    40% { opacity: 1; }
-}
-
-/* ── Progress bar ── */
+/* ── Progress ── */
 .stProgress > div > div > div {
-    background: #ffffff !important;
+    background: #8b5cf6 !important;
     border-radius: 4px !important;
 }
 .stProgress > div > div {
-    background: #1a1a1a !important;
+    background: #18181b !important;
     border-radius: 4px !important;
 }
 
 /* ── Footer ── */
 .ns-footer {
     text-align: center;
-    font-size: 0.65rem;
-    color: #2a2a2a !important;
-    letter-spacing: 1px;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.58rem;
+    color: #27272a !important;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
-    margin-top: 1rem;
-    font-family: 'Inter', sans-serif !important;
+    padding: 0.8rem 0 0;
 }
+.ns-footer span { color: #8b5cf6 !important; }
 
-/* ── Columns ── */
+/* ── Misc ── */
 [data-testid="column"] { background: transparent !important; }
-
-/* ── Scrollbar ── */
 ::-webkit-scrollbar { display: none; }
-
-/* ── Alerts ── */
 .stAlert {
     background: #0a0a0a !important;
-    border: 1px solid #222222 !important;
+    border: 1px solid #27272a !important;
     border-radius: 12px !important;
 }
 </style>
@@ -377,20 +407,27 @@ if "caption" not in st.session_state:
 def get_hash(f):
     return hashlib.md5(f.getvalue()).hexdigest()
 
-
 # ══════════════════════════════════════════════════════════════
 #  LAYOUT
 # ══════════════════════════════════════════════════════════════
 
 # ── Header ──
-st.markdown('<p class="ns-title">Image Caption AI</p>', unsafe_allow_html=True)
-st.markdown('<p class="ns-subtitle">Upload an image to generate a caption</p>', unsafe_allow_html=True)
+st.markdown("""
+<div class="ns-header">
+    <div class="ns-badge">✦ GenAI Project</div>
+    <p class="ns-title">Neural <span>Storyteller</span></p>
+    <p class="ns-subtitle">Upload an image and let the model write its story</p>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="ns-divider"></div>', unsafe_allow_html=True)
 
 # ── Two columns ──
 col_left, col_gap, col_right = st.columns([5, 0.3, 5])
 
 # ── LEFT: Upload & Preview ──
 with col_left:
+    st.markdown('<div class="ns-label">📷 Image Input</div>', unsafe_allow_html=True)
 
     uploaded_file = st.file_uploader(
         "Upload image",
@@ -407,18 +444,20 @@ with col_left:
             st.session_state.last_hash = current_hash
             st.session_state.caption = None
 
-        st.image(image, use_container_width=True)
+        st.image(image, use_column_width=True)
 
     else:
         st.markdown("""
-        <div class="ns-upload-placeholder">
-            <span class="ns-plus">+</span>
-            <span class="ns-upload-hint">Click to upload image</span>
+        <div class="ns-empty">
+            <div class="ns-empty-icon">📸</div>
+            <p class="ns-empty-title">No image uploaded</p>
+            <p class="ns-empty-sub">Drop a .jpg or .png above</p>
         </div>
         """, unsafe_allow_html=True)
 
 # ── RIGHT: Caption Output ──
 with col_right:
+    st.markdown('<div class="ns-label">✨ Caption Output</div>', unsafe_allow_html=True)
 
     if uploaded_file is not None and model and vocab and resnet:
         # Generate caption if not cached
@@ -430,18 +469,29 @@ with col_right:
             bar.empty()
 
         st.markdown(f"""
-        <div class="ns-caption-area">
-            <p class="ns-caption-result">{st.session_state.caption}</p>
+        <div class="ns-caption-card">
+            <div class="ns-cap-header">
+                <div class="ns-cap-dot"></div>
+                <span class="ns-cap-badge">Beam Search</span>
+            </div>
+            <div class="ns-cap-body">
+                <p class="ns-cap-text">{st.session_state.caption}</p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     else:
         st.markdown("""
-        <div class="ns-caption-area">
-            <p class="ns-caption-placeholder">Caption will appear here</p>
+        <div class="ns-empty">
+            <div class="ns-empty-icon">🧠</div>
+            <p class="ns-empty-title">Awaiting input</p>
+            <p class="ns-empty-sub">Caption will appear here</p>
         </div>
         """, unsafe_allow_html=True)
 
-
 # ── Footer ──
-st.markdown('<p class="ns-footer">Powered by PyTorch · ResNet-50 · LSTM</p>', unsafe_allow_html=True)
+st.markdown("""
+<div class="ns-footer">
+    Built with <span>♥</span> using PyTorch · ResNet-50 · LSTM &nbsp;|&nbsp; GenAI Assignment
+</div>
+""", unsafe_allow_html=True)
