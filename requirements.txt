@@ -1,0 +1,9 @@
+
+torch
+torchvision
+pillow
+tqdm
+nltk
+streamlit
+pandas
+numpy<2.0.0
