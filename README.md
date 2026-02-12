@@ -1,9 +1,4 @@
-# 🧠 Neural Storyteller
-
-![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+# Neural Storyteller
 
 > **"An AI that Sees and Speaks"**
 
@@ -11,29 +6,29 @@
 
 ---
 
-## ✨ Features
+## Features
 
 -   **Deep Learning Core**: Utilizes a pre-trained **ResNet-50** (ImageNet weights) for feature extraction and a custom **LSTM** for sequence generation.
 -   **Decoder Strategies**: Implements both **Greedy Search** (fast) and **Beam Search** (high accuracy) for caption generation.
 -   **Premium UI**: A custom-styled Streamlit interface with:
-    -   Pure black (`#000000`) minimal aesthetic.
-    -   Glassmorphism effects and Teal Blue (`#14b8a6`) accents.
+    -   Pure black minimal aesthetic.
+    -   Glassmorphism effects and Teal Blue accents.
     -   Seamless no-scroll layout and animated components.
 -   **Real-time Processing**: Fast inference on CPU or GPU.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-*   **Core**: Python 3.12
+*   **Core**: Python
 *   **Deep Learning**: PyTorch, Torchvision
 *   **Web Framework**: Streamlit
 *   **NLP**: NLTK (Tokenizer)
 *   **Image Processing**: Pillow (PIL)
 *   **Data Handling**: Pandas, Numpy
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
-📂 Neural-Storyteller/
+Neural-Storyteller/
 ├── app.py                 # Main Streamlit application (Frontend)
 ├── model_architecture.py  # PyTorch model definitions (Encoder, Decoder, Seq2Seq)
 ├── neural_storyteller.pth # Trained model weights
@@ -42,7 +37,7 @@
 └── README.md              # Documentation
 ```
 
-## 🚀 Installation
+## Installation
 
 1.  **Clone the repository**:
     ```bash
@@ -64,7 +59,7 @@
 4.  **Ensure Model Files**:
     Place your trained `neural_storyteller.pth` and `vocab.pkl` files in the root directory.
 
-## 🎮 Usage
+## Usage
 
 Run the Streamlit app:
 
@@ -74,7 +69,7 @@ streamlit run app.py
 
 The application will open in your default browser at `http://localhost:8501`.
 
-## 🧠 Model Architecture
+## Model Architecture
 
 The model follows a classic **Show and Tell** architecture:
 
@@ -89,16 +84,6 @@ The model follows a classic **Show and Tell** architecture:
     -   Receives word embeddings step-by-step.
     -   Predicts the next word probability distribution over the vocabulary.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<p align="center">
-  Built with ❤️ for GenAI Assignment
-</p>
