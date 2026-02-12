@@ -28,11 +28,9 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ── No-scroll viewport ── */
-html, body, .stApp, [data-testid="stAppViewContainer"] {
-    overflow: hidden !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
+/* ── No-scroll viewport removed to prevent shaking ── */
+html, body, .stApp {
+    overflow: auto !important;
 }
 
 /* ── Dark background with subtle warmth ── */
@@ -70,9 +68,9 @@ h1, h2, h3, h4 {
     font-weight: 600;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #8b5cf6 !important;
-    background: rgba(139, 92, 246, 0.08);
-    border: 1px solid rgba(139, 92, 246, 0.15);
+    color: #14b8a6 !important;
+    background: rgba(20, 184, 166, 0.08);
+    border: 1px solid rgba(20, 184, 166, 0.15);
     padding: 4px 14px;
     border-radius: 100px;
     margin-bottom: 0.6rem;
@@ -86,7 +84,7 @@ h1, h2, h3, h4 {
     letter-spacing: -1.5px;
 }
 .ns-title span {
-    color: #8b5cf6 !important;
+    color: #14b8a6 !important;
 }
 .ns-subtitle {
     font-size: 0.88rem;
@@ -136,8 +134,8 @@ h1, h2, h3, h4 {
     transition: all 0.3s ease !important;
 }
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #8b5cf6 !important;
-    background: rgba(139, 92, 246, 0.03) !important;
+    border-color: #14b8a6 !important;
+    background: rgba(20, 184, 166, 0.03) !important;
 }
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] span,
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] small {
@@ -151,8 +149,8 @@ h1, h2, h3, h4 {
     transition: all 0.2s ease !important;
 }
 [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] button:hover {
-    border-color: #8b5cf6 !important;
-    color: #a78bfa !important;
+    border-color: #14b8a6 !important;
+    color: #2dd4bf !important;
 }
 /* Hide dropzone once file selected */
 [data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"] {
@@ -167,8 +165,13 @@ h1, h2, h3, h4 {
     border-radius: 14px !important;
     overflow: hidden !important;
     border: 1px solid #1c1c1e !important;
+    width: 100% !important;
 }
-.stImage img { border-radius: 14px !important; }
+.stImage > img {
+    width: 100% !important;
+    border-radius: 14px !important;
+    object-fit: cover !important;
+}
 
 /* ── Caption card ── */
 .ns-caption-card {
@@ -192,7 +195,7 @@ h1, h2, h3, h4 {
 .ns-cap-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #8b5cf6;
+    background: #14b8a6;
 }
 .ns-cap-badge {
     font-family: 'JetBrains Mono', monospace !important;
@@ -215,14 +218,14 @@ h1, h2, h3, h4 {
 }
 .ns-cap-text::before {
     content: '"';
-    color: #8b5cf6 !important;
+    color: #14b8a6 !important;
     font-weight: 700;
     font-size: 1.5rem;
     margin-right: 2px;
 }
 .ns-cap-text::after {
     content: '"';
-    color: #8b5cf6 !important;
+    color: #14b8a6 !important;
     font-weight: 700;
     font-size: 1.5rem;
     margin-left: 2px;
@@ -256,7 +259,7 @@ h1, h2, h3, h4 {
 
 /* ── Progress ── */
 .stProgress > div > div > div {
-    background: #8b5cf6 !important;
+    background: #14b8a6 !important;
     border-radius: 4px !important;
 }
 .stProgress > div > div {
@@ -274,7 +277,7 @@ h1, h2, h3, h4 {
     text-transform: uppercase;
     padding: 0.8rem 0 0;
 }
-.ns-footer span { color: #8b5cf6 !important; }
+.ns-footer span { color: #14b8a6 !important; }
 
 /* ── Misc ── */
 [data-testid="column"] { background: transparent !important; }
@@ -444,7 +447,7 @@ with col_left:
             st.session_state.last_hash = current_hash
             st.session_state.caption = None
 
-        st.image(image, use_column_width=True)
+        st.image(image)
 
     else:
         st.markdown("""
