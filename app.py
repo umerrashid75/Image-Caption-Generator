@@ -152,12 +152,11 @@ h1, h2, h3, h4 {
     border-color: #14b8a6 !important;
     color: #2dd4bf !important;
 }
-/* Hide dropzone once file selected */
-[data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"] {
-    display: none !important;
-}
+/* File list background */
 [data-testid="stFileUploaderFile"] {
-    display: none !important;
+    background: rgba(24, 24, 27, 0.5) !important;
+    border: 1px solid #27272a !important;
+    border-radius: 8px !important;
 }
 
 /* ── Image preview ── */
@@ -495,6 +494,6 @@ with col_right:
 # ── Footer ──
 st.markdown("""
 <div class="ns-footer">
-    Built with <span>♥</span> using PyTorch · ResNet-50 · LSTM &nbsp;|&nbsp; GenAI Assignment
+    Built using PyTorch · ResNet-50 · LSTM &nbsp;|&nbsp; GenAI Assignment
 </div>
 """, unsafe_allow_html=True)
